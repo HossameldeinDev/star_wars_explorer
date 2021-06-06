@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-auto">
+            <p class="font-weight-bold display-4">Collections</p>
+        </div>
+    </div>
+
+
+
+    {% for collection in object_list %}
+
+        <ul class="list-group">
+            <li class="list-group-item">{{ collection.date }}
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=star_wars_explorer
+POSTGRES_USER=VZBBsqZMihoKcskafkFRGHqKSeemdddT
+POSTGRES_PASSWORD=moPup7FMGX3MJBh5v2d1AA0r3ZrRMSAuguOJ0WSG0P73WH3E2zAPIkQ0bnXCO37K
