@@ -51,7 +51,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 
-# Comment the Two lines Below if you wanna use SQLite when you run locally without Docker
+# Comment the Two lines Below if you want to run locally without Docker
 # if env("USE_DOCKER") == "yes":
 #     import socket
 #

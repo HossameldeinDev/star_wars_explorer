@@ -40,7 +40,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-# Comment the Two lines Below if you wanna use SQLite when you run locally without Docker
+# Comment the Two lines Below if you want to use SQLite when you run locally without Docker
 # DATABASES = {"default": env.db("DATABASE_URL")}
 # DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
