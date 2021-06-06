@@ -7,6 +7,13 @@
         <div class="col-md-auto">
             <p class="font-weight-bold display-4">Collections</p>
         </div>
+        <div class="col-md-auto">
+            <form action="collection/fetcher">
+                <p class="lead">
+                    <button id="stat-btn" class="btn btn-success btn-lg">Fetch</button>
+                </p>
+            </form>
+        </div>
     </div>
 
 
@@ -14,8 +21,9 @@
     {% for collection in object_list %}
 
         <ul class="list-group">
-            <li class="list-group-item">{{ collection.date }}
+            <li class="list-group-item"><a href="{% url 'collection_detail' collection.pk %}">{{ collection.date }}</a>
             </li>
         </ul>
+
     {% endfor %}
 {% endblock content %}
