@@ -5,6 +5,7 @@ from pathlib import Path
 
 import petl
 import requests
+from django.http import JsonResponse
 
 from .models import Collection
 
@@ -114,3 +115,26 @@ def crawl():
     petl.tocsv(table, data_path / file_name)
     collection_item = Collection.objects.create(file_name=file_name)
     return collection_item
+
+
+def collection_analytics(request):
+    """
+    This function is responsible for calculating the occurrences of values (combination of values) for columns.
+
+    @param request: The request from the Analytics view, holding the file name
+     and the columns to be used in the analytics
+    @return: Response JSON holding the headers and the data to be shown in the table in the Analytics view
+    """
+    file_name = request.GET.get("csv_file")
+    cols = request.GET.get("cols")
+    if cols:
+        cols = cols.split(",")
+    else:
+        return JsonResponse({"csv_headers": False, "csv_rows": False})
+    response = {}
+    data = petl.fromcsv(data_path / file_name)
+    analytics = petl.valuecounts(data, *cols)
+    analytics = petl.cut(analytics, *cols, "count")
+    response["csv_headers"] = petl.header(analytics)
+    response["csv_rows"] = petl.listoflists(petl.data(analytics))
+    return JsonResponse(response)

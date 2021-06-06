@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="post-entry">
+        <h3>Analytics View</h3>
+        <h3><a href="{% url 'collection_detail' collection.pk %}">{{ collection.file_name }}</a></h3>
+
+    </div>
+
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        {% csrf_token %}
+        {% for header in csv_headers %}
+            <label class="btn btn-light active">
+                <input type="checkbox" name="options" id="{{ header }}" autocomplete="off"> {{ header }}
+            </label>
+        {% endfor %}
+    </div>
+
+
+
+    <table class="table table-striped table-hover" id="Analytics">
+        <thead class="table-primary">
+
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+
+    <script>
+        function getCheckedBoxes(chkboxName) {
+            var checkboxes = document.getElementsByName(chkboxName);
+            var checkboxesChecked = [];
+            // loop over them all
+            for (let i = 0; i < checkboxes.length; i++) {
+                // And stick the checked ones onto an array...
+                if (checkboxes[i].checked) {
+                    checkboxesChecked.push(checkboxes[i].id);
+                }
+            }
+            // Return the array if it is non-empty, or null
+            return checkboxesChecked.length > 0 ? checkboxesChecked.join() : null;
+        }
+
+
+        const csrf = $("input[name=csrfmiddlewaretoken]").val();
+
+        $('input[type="checkbox"]').on('click', function () {
+            let checkedBoxes = getCheckedBoxes("options");
+            const data = {};
+            data.cols = checkedBoxes;
+            data.csv_file = "{{ collection.file_name }}"
+            data.csrfmiddlewaretoken = csrf
+            $.ajax({
+                type: "GET",
+                url: "",
+                data: data,
+                dataType: "json",
+                success:
+                    function (response) {
+                        $("#Analytics tr").remove();
+                        const headers = response.csv_headers;
+                        const data = response.csv_rows;
+                        if (headers.length > 0) {
+                            const table_head = document.getElementById("Analytics").getElementsByTagName('thead')[0];
+                            const row = table_head.insertRow();
+                            let header_index;
+                            for (header_index = 0; header_index < headers.length; header_index++) {
+                                row.insertCell().innerHTML = headers[header_index];
+                            }
+                            const table_body = document.getElementById("Analytics").getElementsByTagName('tbody')[0];
+                            let row_index;
+                            for (row_index = 0; row_index < data.length; row_index++) {
+                                const row = table_body.insertRow();
+                                let col_index;
+                                for (col_index = 0; col_index < headers.length; col_index++) {
+                                    row.insertCell().innerHTML = data[row_index][col_index]
+                                }
+
+
+                            }
+                        }
+
+                    }
+
+
+            })
+        });
+
+    </script>
+
+{% endblock content %}

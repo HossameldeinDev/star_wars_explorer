@@ -87,3 +87,18 @@ class CollectionTests(TestCase):
         file_path = data_path / collection.file_name
         self.assertTrue(isfile(file_path))
 
+    @patch("star_wars_explorer.app.views.data_path", mocked_data_path)
+    @patch("star_wars_explorer.app.utils.data_path", mocked_data_path)
+    @patch("star_wars_explorer.app.utils.crawl_planets", return_value=mocked_planets)
+    @patch("star_wars_explorer.app.utils.crawl_people", return_value=mocked_people)
+    def test_collection_analytics_view(self, _, __):
+        from star_wars_explorer.app.utils import crawl, data_path
+
+        collection = crawl()
+        response = self.client.get(f"/collection/{collection.id}/analytics/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "collection_analytics.html")
+        self.assertContains(response, collection.file_name)
+        collection = Collection.objects.get(pk=collection.id)
+        file_path = data_path / collection.file_name
+        self.assertTrue(isfile(file_path))
