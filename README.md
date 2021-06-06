@@ -20,32 +20,6 @@ Running Locally
 
     $ pip install -r requirements/local.txt
 
-4- Configure your DB, to make it easily you can change the DB to be sqlite3 instead of postgresql Django Doc.
-Just go for star_wars_explorer/config/settings/base.py Line 40
-Comment the two lines 
-```python
-# DATABASES = {"default": env.db("DATABASE_URL")}
-# DATABASES["default"]["ATOMIC_REQUESTS"] = True
-```
-then uncomment those lines 
-```python
-DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': 'mydatabase',
-     }
-}
-```
-
-5- go for star_wars_explorer/config/settings/local.py Line 55 and comment the following code
-```python
-# if env("USE_DOCKER") == "yes":
-#     import socket
-# 
-#     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-#     INTERNAL_IPS += [".".join(ip.split(".")[:-1] + ["1"]) for ip in ips]
-```
-
 6- Apply Migrations
 
     $ python manage.py migrate
@@ -66,6 +40,31 @@ Using Docker
 * Docker; if you don’t have it yet, follow the [installation_instructions](https://docs.docker.com/install/#supported-platforms)
 
 * Docker Compose; refer to the official documentation for the [installation_guilde](https://docs.docker.com/compose/install/)
+
+1- Configure your DB, Just go for star_wars_explorer/config/settings/base.py Line 40
+Uncomment the two lines 
+```python
+DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+```
+then comment those lines 
+```python
+# DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.sqlite3',
+#          'NAME': 'mydatabase',
+#      }
+# }
+```
+
+2- go for star_wars_explorer/config/settings/local.py Line 55 and uncomment the following code
+```python
+ if env("USE_DOCKER") == "yes":
+     import socket
+ 
+     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+     INTERNAL_IPS += [".".join(ip.split(".")[:-1] + ["1"]) for ip in ips]
+```
 
 
 Then you can build the environment, this can take a while especially the first time you run this particular command on your development system:
