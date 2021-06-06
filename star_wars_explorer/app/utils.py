@@ -110,6 +110,7 @@ def crawl():
     people = crawl_people(planets)
     table = petl.fromdicts(people, header=headers)
     file_name = "{}.csv".format(datetime.today().strftime("%d%m%Y%H%M%S"))
+    Path(data_path).mkdir(parents=True, exist_ok=True)
     petl.tocsv(table, data_path / file_name)
     collection_item = Collection.objects.create(file_name=file_name)
     return collection_item
