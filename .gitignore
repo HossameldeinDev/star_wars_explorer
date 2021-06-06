@@ -267,6 +267,7 @@ tags
 ### Project template
 
 star_wars_explorer/media/
+star_wars_explorer/data/*
 
 .pytest_cache/
 

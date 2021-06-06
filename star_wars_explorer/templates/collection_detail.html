@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="post-entry">
+        <h3>{{ collection.file_name }}</h3>
+    </div>
+
+
+
+    <table class="table table-striped table-hover" id="Characters">
+        <thead class="table-primary">
+        <tr>
+            {% for header in csv_headers %}
+                <th scope="col">{{ header }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in csv_rows|slice:"10" %}
+            <tr>
+                {% for element in row %}
+                    <td>{{ element }}</td>
+
+                {% endfor %}
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <button id="stat-btn" class="btn btn-link btn-outline-info" onclick="myFunction()">Load more</a>
+    </button>
+    <script type="text/javascript">
+        let data ={{ csv_rows|safe }};
+        let data_size = data[0].length
+        const data_length = data.length;
+        let n_rows_displayed = 10;
+
+        function myFunction() {
+            let n_rows_to_be_displayed = n_rows_displayed + 10
+            if (n_rows_to_be_displayed > data_length) {
+                n_rows_to_be_displayed = data_length
+                document.getElementById('stat-btn').style.display = 'none'
+            }
+            const table = document.getElementById("Characters");
+            let row_index;
+            for (row_index = n_rows_displayed; row_index < n_rows_to_be_displayed; row_index++) {
+                const row = table.insertRow();
+                let col_index;
+                for (col_index = 0; col_index < data_size; col_index++) {
+                    row.insertCell().innerHTML = data[row_index][col_index];
+                }
+
+            }
+            n_rows_displayed = n_rows_to_be_displayed
+
+        }
+
+    </script>
+
+{% endblock content %}
